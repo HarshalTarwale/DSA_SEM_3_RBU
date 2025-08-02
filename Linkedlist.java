@@ -1,0 +1,118 @@
+
+import java.util.Scanner;
+
+public class Linkedlist {
+
+    Node head;
+
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int d) {
+            data = d;
+            next = null;
+        }
+    }
+
+    public void insert(int data) {
+        head = insertRecursive(head, data);
+    }
+
+    private Node insertRecursive(Node current, int data) {
+        if (current == null) {
+            return new Node(data);
+        }
+        current.next = insertRecursive(current.next, data);
+        return current;
+    }
+
+    public void printList() {
+        printRecursive(head);
+    }
+
+    private void printRecursive(Node current) {
+        if (current == null) {
+            System.out.print("NULL");
+            return;
+        }
+        System.out.print("[ " + current.data + " ] ");
+        printRecursive(current.next);
+    }
+
+    public boolean search(int key) {
+        return searchRecursive(head, key);
+    }
+
+    private boolean searchRecursive(Node current, int key) {
+        if (current == null) {
+            return false;
+        }
+        if (current.data == key) {
+            return true;
+        }
+        return searchRecursive(current.next, key);
+    }
+
+
+    public void delete(int data) {
+        head = deleteRecursive(head, data);
+    }
+
+    private Node deleteRecursive(Node current, int data) {
+        
+        if (current == null) {
+            return null;
+        }
+        
+        if (current.data == data) {
+            return current.next;
+        }
+       
+        current.next = deleteRecursive(current.next, data);
+        
+        return current;
+    }
+
+
+    public static void main(String[] args) {
+        Linkedlist list = new Linkedlist ();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("How many numbers do you want to add to the list? ");
+        int count = scanner.nextInt();
+
+    
+        for (int i = 0; i < count; i++) {
+            System.out.print("Enter number " + (i + 1) + ": ");
+            int number = scanner.nextInt();
+            list.insert(number);
+        }
+        list.printList();
+        System.out.println();
+
+        System.out.print("\nEnter a number to check :");
+        int numberToSearch = scanner.nextInt();
+
+        if (list.search(numberToSearch)) {
+            System.out.println(numberToSearch + " was detected in the list.");
+        } else {
+            System.out.println(numberToSearch + " was not detected in the list.");
+        }
+
+        System.out.print("\nEnter a number to delete from the list: ");
+        int numberToDelete = scanner.nextInt();
+
+        if (list.search(numberToDelete)) {
+            list.delete(numberToDelete);
+            System.out.println(numberToDelete + " was deleted from the list.");
+            System.out.println("\n--- Updated Linked List ---");
+            list.printList();
+            System.out.println();
+        } else {
+            System.out.println(numberToDelete + " was not found in the list, so it couldn't be deleted.");
+        }
+        
+        scanner.close();
+    }
+}
